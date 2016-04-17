@@ -1,19 +1,24 @@
 defmodule EventNanny do
   use Application
 
-  # See http://elixir-lang.org/docs/stable/elixir/Application.html
-  # for more information on OTP Applications
+  @sup EventNanny.Event.Supervisor
+
+  import Application, only: [get_env: 3]
+
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
     children = [
-      # Define workers and child supervisors to be supervised
-      # worker(EventNanny.Worker, [arg1, arg2, arg3]),
+      worker(GenEvent, [[name: event_monitor]]),
+      supervisor(@sup, [[event_monitor: event_monitor]])
     ]
 
-    # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
-    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: EventNanny.Supervisor]
     Supervisor.start_link(children, opts)
   end
+
+  defp event_monitor do
+    get_env(:event_nanny, :event_monitor, EventNanny.EventMonitor)
+  end
+
 end
