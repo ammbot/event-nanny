@@ -14,7 +14,12 @@ defmodule EventNanny do
     ]
 
     opts = [strategy: :one_for_one, name: EventNanny.Supervisor]
+    :timer.apply_after(500, @sup, :add_handler_from_config, [])
     Supervisor.start_link(children, opts)
+  end
+
+  def add_mon_handler(handler, args) do
+    Supervisor.start_child @sup, [[handler: handler, args: args]]
   end
 
   defp event_monitor do
