@@ -13,7 +13,7 @@ defmodule EventNanny do
       supervisor(@sup, [[event_monitor: event_monitor]])
     ]
 
-    opts = [strategy: :one_for_one, name: EventNanny.Supervisor]
+    opts = [strategy: :one_for_all, name: EventNanny.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
