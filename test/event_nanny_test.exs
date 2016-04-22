@@ -16,11 +16,9 @@ defmodule EventNannyTest do
   end
 
   test "should add_mon_handler from config" do
-    :timer.sleep(1000)
     children = Supervisor.count_children(EventNanny.Event.Supervisor)
     assert children[:active] == 1
     assert children[:workers] == 1
-    handlers = GenEvent.which_handlers(MyEventMonitor)
     assert GenEvent.which_handlers(MyEventMonitor) == [MyHandler]
     state = GenEvent.call(MyEventMonitor, MyHandler, :state)
     assert state == [arg1: 1, arg2: 2]

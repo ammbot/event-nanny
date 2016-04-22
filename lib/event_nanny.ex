@@ -14,8 +14,14 @@ defmodule EventNanny do
     ]
 
     opts = [strategy: :one_for_one, name: EventNanny.Supervisor]
-    :timer.apply_after(500, @sup, :add_handler_from_config, [])
     Supervisor.start_link(children, opts)
+  end
+
+  def start_phase(:add_handler, _type, _args) do
+    :event_nanny
+    |> Application.get_env(:event_handler, [])
+    |> Enum.map(fn{h,a} -> add_mon_handler(h,a) end)
+    :ok
   end
 
   def add_mon_handler(handler, args) do

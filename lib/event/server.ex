@@ -15,13 +15,14 @@ defmodule EventNanny.Event.Server do
     end
   end
 
-  def handle_info({:gen_event_EXIT, _handler, :normal}=msg, state) do
+  def handle_info({:gen_event_EXIT, _handler, :normal}, state) do
     {:stop, :shutdown, state}
   end
-  def handle_info({:gen_event_EXIT, _handler, :shutdown}=msg, state) do
+  def handle_info({:gen_event_EXIT, _handler, :shutdown}, state) do
     Supervisor.stop(EventNanny.Event.Supervisor)
+    {:stop, :shutdown, state}
   end
-  def handle_info({:gen_event_EXIT, _handler, _reason}=msg, state) do
+  def handle_info({:gen_event_EXIT, _handler, _reason}, state) do
     exit(:restart_me)
     {:noreply, state}
   end

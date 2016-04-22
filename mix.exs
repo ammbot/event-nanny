@@ -12,6 +12,7 @@ defmodule EventNanny.Mixfile do
 
   def application do
     [applications: [:logger],
+     start_phases: [{:add_handler, []}],
      mod: {EventNanny, []}]
   end
 

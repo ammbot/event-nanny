@@ -11,10 +11,4 @@ defmodule EventNanny.Event.Supervisor do
     supervise(children, opts)
   end
 
-  def add_handler_from_config do
-    :event_nanny
-    |> Application.get_env(:event_handler, [])
-    |> Enum.each(fn{h,a} -> EventNanny.add_mon_handler(h,a) end)
-  end
-
 end
