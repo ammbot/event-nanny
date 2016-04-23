@@ -1,13 +1,16 @@
 defmodule EventNanny.Mixfile do
   use Mix.Project
 
+  @version "0.1.0"
+
   def project do
     [app: :event_nanny,
-     version: "0.0.1",
+     version: @version,
      elixir: "~> 1.2",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps]
+     deps: deps,
+     description: description,
+     package: package,
+     name: "event_nanny"]
   end
 
   def application do
@@ -17,6 +20,26 @@ defmodule EventNanny.Mixfile do
   end
 
   defp deps do
-    []
+    [
+      {:inch_ex, "~> 0.5", only: :docs},
+      {:earmark, "~> 0.2", only: :dev},
+      {:ex_doc, "~> 0.11", only: :dev}
+    ]
   end
+
+  defp description do
+    """
+    Nanny for GenEvent
+    restart handler when it exit abnormally
+    """
+  end
+
+  defp package do
+    [
+      maintainers: ["ammbot"],
+      licenses: ["Apache 2.0"],
+      links: %{"GitHub" => "https://github.com/ammbot/event-nanny.git"}
+    ]
+  end
+
 end
