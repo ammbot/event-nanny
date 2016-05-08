@@ -17,4 +17,8 @@ defmodule MyHandler do
   def handle_call(:state, state) do
     {:ok, state, state}
   end
+  def handle_call(:kill, state) do
+    state = 1/0
+    {:ok, state, state}
+  end
 end

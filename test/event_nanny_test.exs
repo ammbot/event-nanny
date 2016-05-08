@@ -24,4 +24,23 @@ defmodule EventNannyTest do
     assert state == [arg1: 1, arg2: 2]
   end
 
+  test "should restart when exit abnormally" do
+    EventNanny.add_mon_handler {MyHandler, :restart_soon}, []
+    handlers = GenEvent.which_handlers(MyEventMonitor)
+    assert {MyHandler, :restart_soon} in handlers
+    EventNanny.call {MyHandler, :restart_soon}, :kill
+    :timer.sleep(500)
+    handlers = GenEvent.which_handlers(MyEventMonitor)
+    assert {MyHandler, :restart_soon} in handlers
+  end
+
+  test "should not restart when exit normally" do
+    EventNanny.add_mon_handler {MyHandler, :die_soon}, []
+    handlers = GenEvent.which_handlers(MyEventMonitor)
+    assert {MyHandler, :die_soon} in handlers
+    EventNanny.remove_handler {MyHandler, :die_soon}, []
+    handlers = GenEvent.which_handlers(MyEventMonitor)
+    refute {MyHandler, :die_soon} in handlers
+  end
+
 end

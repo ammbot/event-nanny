@@ -22,9 +22,8 @@ defmodule EventNanny.Event.Server do
     Supervisor.stop(EventNanny.Event.Supervisor)
     {:stop, :shutdown, state}
   end
-  def handle_info({:gen_event_EXIT, _handler, _reason}, state) do
-    exit(:restart_me)
-    {:noreply, state}
+  def handle_info({:gen_event_EXIT, _handler, reason}, state) do
+    {:stop, reason, state}
   end
 
 end

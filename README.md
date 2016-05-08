@@ -10,7 +10,7 @@ First, add EventNanny to your mix.exs dependencies:
 
 ```elixir
 def deps do
-  [{:event_nanny, "~> 0.1.0"}]
+  [{:event_nanny, "~> 0.1.1"}]
 end
 ```
 
